@@ -1,0 +1,13 @@
+﻿**/wwwroot/upload/*
+**/bin/
+**/debug/
+**/obj/
+**/.vs/
+**/.idea/
+**/TestResults/
+**/Logs/*.log
+**/*.user
+**/*.dbmdl
+**/*.jfm
+/source/DevSkill/web.env
+/source/DevSkill/Applications/DevSkill.Web/wwwroot/temp
