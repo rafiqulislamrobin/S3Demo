@@ -4,51 +4,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Demo.Customer.Services;
+using Demo.Customer.Business_Object;
 
 namespace DemoProject.Areas.Admin.Models
 {
     public class EditCustomerModel
 
-    { 
-        //public int? Id { get; set; }
-        //[Required , MaxLength(100,ErrorMessage = "Nameshould be less than 100 characters")]
-        //public string Name { get; set; }
-        //[Required,Range(0,150)]
-        //public int? Age { get; set; }
-        //[Required, MaxLength(300, ErrorMessage = "Nameshould be less than 300 characters")]
-        //public string Address { get; set; }
+    {
+        public Guid Id { get; set; }
+        [Required, MaxLength(100, ErrorMessage = "Nameshould be less than 100 characters")]
+        public string Name { get; set; }
+        [Required, Range(0, 150)]
+        public int? Age { get; set; }
+        [Required, MaxLength(300, ErrorMessage = "Nameshould be less than 300 characters")]
+        public string Address { get; set; }
+        private ILifetimeScope _scope;
+        private IBookingService _bookingService;
 
         //private readonly IBookingService _bookingService;
-        //public EditCustomerModel()
-        //{
-        //    _bookingService = Startup.AutofacContainer.Resolve<IBookingService>();
-        //}
-        //public EditCustomerModel(IBookingService bookingService)
-        //{
-        //    _bookingService = bookingService;
-        //}
+        public EditCustomerModel()
+        {
 
-        //public void LoadModelData(int id)
-        //{
-        //    var Customer = _bookingService.GetCustomer(id);
+        }
 
-        //    Id = Customer?.Id;
-        //    Name = Customer?.Name;
-        //    Age = Customer?.Age;
-        //    Address = Customer?.Address;
-        //}
+        public EditCustomerModel(IBookingService bookingService)
+        {
+            _bookingService = bookingService;
+        }
 
-        //internal void Update()
-        //{
-        //    var customer = new CustomerBO
-        //    {
-        //        Id =Id.HasValue? Id.Value :0,
-        //        Name= Name,
-        //        Age =Age.HasValue? Age.Value :0,
-        //        Address =Address
-               
-        //    };
-        //    _bookingService.UpdateCustomer(customer);
-        //}
+        public void Resolve(ILifetimeScope scope)
+        {
+            _scope = scope;
+            _bookingService = _scope.Resolve<IBookingService>();
+        }
+
+
+        public async Task LoadModelData(Guid id)
+        {
+            var Customer = await _bookingService.GetCustomer(id);
+
+            Id = Customer.Id;
+            Name = Customer!.Name;
+            Age = Customer!.Age;
+            Address = Customer!.Address;
+        }
+
+        public async Task Update()
+        {
+            var customer = new CustomerBO
+            {
+                Id = Id,
+                Name = Name,
+                Age = Age.HasValue ? Age.Value : 0,
+                Address = Address
+
+            };
+
+            await _bookingService.UpdateCustomer(customer);
+        }
     }
 }

@@ -7,7 +7,8 @@ using Serilog.Events;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using DemoProject;
-
+using Demo.Customer.Context;
+using Demo.Customer;
 
 const string connectionStringName = "DemoDbConnection";
 const string fatalErrorEmailSubject = "A Log Error Occured in Demo Project";
@@ -26,7 +27,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder
-        .RegisterModule(new WebModule());
+        .RegisterModule(new WebModule())
+        .RegisterModule(new BookingModule(connectionString, migrationAssemblyName));
 });
 
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -39,6 +41,9 @@ builder.WebHost.UseUrls("http://*:80");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
+builder.Services.AddDbContext<BookingDbContext>(options =>
+    options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
