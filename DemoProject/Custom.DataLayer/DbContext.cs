@@ -39,7 +39,26 @@ namespace Custom.DataLayer
             return customerList;
         }
    
-        public void AddCustomer(Customer Customer)
+        public void AddCustomer(Customer Customer, string entityName)
+        {
+            Customer.Id = Guid.NewGuid();
+            var id = Customer.Id.ToString();
+            string queryString =
+           $"Insert into {entityName}([Id], [Name], [Address], [Age]) Values('{Customer.Id}', '{Customer.Name}', '{Customer.Address}', '{Customer.Age}') ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(queryString, connection);
+                sqlCommand.CommandType = CommandType.Text;
+                connection.Open();
+                sqlCommand.ExecuteNonQuery();
+                connection.Close();
+                sqlCommand.Dispose();
+                connection.Dispose();
+            }
+        }
+
+        public void AddCustomerSp(Customer Customer)
         {
             Customer.Id = new Guid();
 

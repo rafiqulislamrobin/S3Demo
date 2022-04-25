@@ -23,7 +23,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
         [Required]
         public string Address { get; set; }
 
-        internal void CreateCustomer()
+        public void CreateCustomerSp()
         {
             var customer = new Customer()
             {
@@ -33,7 +33,21 @@ namespace DemoProject.Areas.Admin.ModelsAdo
             };
 
             var dbContext = new DbContext();
-            dbContext.AddCustomer(customer);
+            dbContext.AddCustomerSp(customer);
+        }
+
+        public void CreateCustomer()
+        {
+            var entityName = "Customers";
+            var customer = new Customer()
+            {
+                Name = Name,
+                Age = Age,
+                Address = Address,
+            };
+
+            var dbContext = new DbContext();
+            dbContext.AddCustomer(customer, entityName);
         }
     }
 }

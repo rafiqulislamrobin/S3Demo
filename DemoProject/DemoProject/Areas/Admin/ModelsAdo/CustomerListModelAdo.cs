@@ -11,9 +11,9 @@ namespace DemoProject.Areas.Admin.ModelsAdo
     {
         public async Task<object> GetCustomers(DataTablesAjaxRequestModelAdo dataTableAjaxRequestModel)
         {
-            var dbContext = new DbContext();
+            var repository = new Repository();
 
-            var customers = dbContext.GetAllCustomers();
+            var customers = repository.GetAllCustomers();
 
             return new
             {
@@ -31,9 +31,9 @@ namespace DemoProject.Areas.Admin.ModelsAdo
 
         public async Task Delete(Guid id)
         {
-            var dbContext = new DbContext();
+            var repository = new Repository();
 
-            dbContext.DeleteCustomer(id);
+            repository.DeleteCustomer(id);
         }
     }
 }

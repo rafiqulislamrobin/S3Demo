@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Custom.DataLayer
 {
-    public class Repository
+    public class Repository : DbContext
     {
     }
 }
