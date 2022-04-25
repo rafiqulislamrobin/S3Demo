@@ -1,10 +1,7 @@
 ﻿using Autofac;
 using DemoProject.Areas.Admin.Models;
+using DemoProject.Areas.Admin.ModelsAdo;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DemoProject.Areas.Admin.Controllers
 {
@@ -24,38 +21,37 @@ namespace DemoProject.Areas.Admin.Controllers
         {
             return View();
         }
-      
+
         public IActionResult Customers()
         {
-            var model = _scope.Resolve<CustomerListModel>();
+            var model = new CustomerListModelAdo();
 
             return View(model);
         }
 
         public async Task<JsonResult> GetCustomerData()
         {
-            var dataTableAjaxRequestModel = new DataTablesAjaxRequestModel(Request);
-            var model = _scope.Resolve<CustomerListModel>();
+            var dataTableAjaxRequestModel = new DataTablesAjaxRequestModelAdo(Request);
+            var model = new CustomerListModelAdo();
             var data = await model.GetCustomers(dataTableAjaxRequestModel);
             return Json(data);
         }
 
         public IActionResult Create()
         {
-            var model = _scope.Resolve<CreateCutomerModel>(); ;
+            var model = new CreateCutomerModelAdo();
             return View(model);
         }
 
 
         [HttpPost, AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Create(CreateCutomerModel model)
+        public async Task<IActionResult> Create(CreateCutomerModelAdo model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    model.Resolve(_scope);
-                    await model.CreateCustomer();
+                     model.CreateCustomer();
                 }
                 catch (Exception ex)
                 {
@@ -69,26 +65,26 @@ namespace DemoProject.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(Guid id)
         {
-            var model = _scope.Resolve<EditCustomerModel>();
+            var model = new EditCustomerModelAdo();
             await model.LoadModelData(id);
             return View(model);
         }
 
         [HttpPost, AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Edit(EditCustomerModel model)
+        public async Task<IActionResult> Edit(EditCustomerModelAdo model)
         {
             if (ModelState.IsValid)
             {
-                model.Resolve(_scope);
                 await model.Update();
             }
+
             return View(model);
         }
 
         [HttpPost, AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var model = _scope.Resolve<CustomerListModel>();
+            var model = new CustomerListModelAdo();
             await model.Delete(id);
             return RedirectToAction(nameof(Customers));
         }

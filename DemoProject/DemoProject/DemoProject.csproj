@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Custom.DataLayer\Custom.DataLayer.csproj" />
     <ProjectReference Include="..\Demo.Customer\Demo.Customer.csproj" />
   </ItemGroup>
 

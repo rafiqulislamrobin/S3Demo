@@ -41,8 +41,8 @@ builder.WebHost.UseUrls("http://*:80");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
-builder.Services.AddDbContext<BookingDbContext>(options =>
-    options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
+//builder.Services.AddDbContext<BookingDbContext>(options =>
+//    options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
