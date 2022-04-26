@@ -58,6 +58,38 @@ namespace Custom.DataLayer
             }
         }
 
+        public void AddCustomerBulk(List<Customer> customers, string entityName)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Id", typeof(Guid));
+            dt.Columns.Add("Name", typeof(string));
+            dt.Columns.Add("Age", typeof(int));
+            dt.Columns.Add("Address", typeof(string));
+
+            foreach (var customer in customers)
+            {
+                DataRow row = dt.NewRow();
+                row["Id"] = Guid.NewGuid();
+                row["Name"] = customer.Name;
+                row["Age"] = customer.Age;
+                row["Address"] = customer.Address;
+                dt.Rows.Add(row);
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+                {
+                    bulkCopy.DestinationTableName = entityName;
+                    bulkCopy.WriteToServer(dt);
+                }
+
+                connection.Close();
+            }
+        }
+
         public void AddCustomerSp(Customer Customer)
         {
             Customer.Id = new Guid();

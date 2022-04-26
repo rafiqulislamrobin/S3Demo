@@ -47,7 +47,29 @@ namespace DemoProject.Areas.Admin.ModelsAdo
             };
 
             var dbContext = new DbContext();
+            CreateCustomerBulk();
             dbContext.AddCustomer(customer, entityName);
+         
+        }
+
+        public void CreateCustomerBulk()
+        {
+            var entityName = "Customers";
+            var customers = new List<Customer>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                var customer = new Customer()
+                {
+                    Name = $"abc{i}" ,
+                    Age = 1+1,
+                    Address = "xyz",
+                };
+                customers.Add(customer);
+            }
+
+            var dbContext = new DbContext();
+            dbContext.AddCustomerBulk(customers, entityName);
         }
     }
 }
