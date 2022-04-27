@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
-
-using System.ComponentModel.DataAnnotations;
-using Demo.Customer.Services;
-using Demo.Customer.Business_Object;
+﻿
 using Custom.DataLayer;
-using ChildRepositoryAdoGeneric = Demo.GenericCustomLayerAdo.ChildRepositoryAdoGeneric ;
+using System.ComponentModel.DataAnnotations;
 
-namespace DemoProject.Areas.Admin.ModelsAdo
+namespace Demo.Api.Models
 {
     public class CreateCutomerModelAdo
     {
 
         [Required, MaxLength(100, ErrorMessage = "Nameshould be less than 100 characters")]
-        public string Name{ get; set; }
+        public string Name { get; set; }
 
         [Required, Range(0, 150)]
         public int Age { get; set; }
@@ -26,7 +18,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
 
         public void CreateCustomerSp()
         {
-            var customer = new Customer()
+            var customer = new Custom.DataLayer.Customer()
             {
                 Name = Name,
                 Age = Age,
@@ -40,7 +32,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
         public void CreateCustomer()
         {
             var entityName = "Customers";
-            var customer = new Customer()
+            var customer = new Custom.DataLayer.Customer()
             {
                 Name = Name,
                 Age = Age,
@@ -49,35 +41,20 @@ namespace DemoProject.Areas.Admin.ModelsAdo
 
             var dbContext = new Repository();
             dbContext.AddCustomer(customer, entityName);
-         
-        }
-
-        public void CreateCustomer2()
-        {
-            var entityName = "Customers";
-            var customer = new Demo.GenericCustomLayerAdo.Customer()
-            {
-                Name = Name,
-                Age = Age,
-                Address = Address,
-            };
-
-            var repositoryGeneric = new ChildRepositoryAdoGeneric();
-            repositoryGeneric.AddCustomer(customer);
 
         }
 
         public void CreateCustomerBulk()
         {
             var entityName = "Customers";
-            var customers = new List<Customer>();
+            var customers = new List<Custom.DataLayer.Customer>();
 
             for (int i = 0; i < 10; i++)
             {
-                var customer = new Customer()
+                var customer = new Custom.DataLayer.Customer()
                 {
-                    Name = $"abc{i}" ,
-                    Age = 1+1,
+                    Name = $"abc{i}",
+                    Age = 1 + 1,
                     Address = "xyz",
                 };
                 customers.Add(customer);
