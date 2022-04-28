@@ -8,7 +8,7 @@ using Demo.Customer.Services;
 using Demo.Customer.Business_Object;
 using Custom.DataLayer;
 
-namespace DemoProject.Areas.Admin.ModelsAdo
+namespace Demo.Api.Models
 {
     public class EditCustomerModelAdo
 
@@ -37,7 +37,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
         {
             var dbContext = new Repository();
 
-            var customer = new Customer
+            var customer = new Custom.DataLayer.Customer
             {
                 Id = Id,
                 Name = Name,

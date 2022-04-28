@@ -9,6 +9,8 @@ using Autofac;
 using DemoProject;
 using Demo.Customer.Context;
 using Demo.Customer;
+using Custom.DataLayer;
+using Custom.GenericCustomLayerAdo;
 
 const string connectionStringName = "DemoDbConnection";
 const string fatalErrorEmailSubject = "A Log Error Occured in Demo Project";
@@ -23,6 +25,7 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 var webHostEnvironment = builder.Environment;
 var connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 var migrationAssemblyName = typeof(Program).Assembly.FullName;
+var smtpConfiguration = builder.Configuration.GetSection("ConnectionString").Get<ConnectionString>();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
