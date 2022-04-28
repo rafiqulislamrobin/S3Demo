@@ -13,11 +13,9 @@ using Custom.DataLayer;
 using Custom.GenericCustomLayerAdo;
 
 const string connectionStringName = "DemoDbConnection";
-const string fatalErrorEmailSubject = "A Log Error Occured in Demo Project";
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
     .AddEnvironmentVariables()
     .Build();
 // Add services to the container.
@@ -25,7 +23,6 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 var webHostEnvironment = builder.Environment;
 var connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 var migrationAssemblyName = typeof(Program).Assembly.FullName;
-var smtpConfiguration = builder.Configuration.GetSection("ConnectionString").Get<ConnectionString>();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
@@ -59,6 +56,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 try
 {
+    builder.Services.Configure<FileUploadSettings>(
+    builder.Configuration.GetSection(FileUploadSettings.FileUploadSetting));
     var app = builder.Build();
     var autofacContainer = app.Services.GetAutofacRoot();
 

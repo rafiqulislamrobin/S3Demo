@@ -1,0 +1,69 @@
+﻿@model FileUploadModel
+@{
+    ViewData["Title"] = "UploadFile";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>File List</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Upload File</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Upload File</h3>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" asp-controller="File" asp-action="UploadFile">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label asp-for="File">Upload File</label>
+                                <input type="file" class="form-control" id="File" asp-for="File" required
+                                       placeholder="Upload (.txt/.json) file only">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                        @if(@Model.Files.Count != 0)
+                        {
+                         <table id="filelisttable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Last Access Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                @{
+                                    foreach (var s in @Model.Files)
+                                    {
+                                        <tr>
+                                            <td>@s.Name</td>
+                                            <td>@s.LastAccessTime</td>
+                                            <td class="btn  text-white bg-dark">@Html.ActionLink("Download", "DownloadFile", new { fileName = @s.Name, extentionType = @s.Extension })</td>
+                                            <td class="btn text-white bg-red">@Html.ActionLink("Delete", "Delete", new { fileName = @s.Name, extentionType = @s.Extension })</td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
