@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Custom.DataLayer
 {
-    public class Repository
+    public class Repository : IRepository
     {
         string connectionString = "Server=.\\SQLEXPRESS,49172;Database = Demo;User Id=Sa;Password=allahhelpme;MultipleActiveResultSets=True;";
 
@@ -90,11 +90,11 @@ namespace Custom.DataLayer
             }
         }
 
-        public void AddCustomerSp(Customer Customer)
+        public async Task AddCustomerSpAsync(Customer Customer)
         {
             Customer.Id = new Guid();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            await using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand("sp_AddCustomer", connection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;

@@ -24,7 +24,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
         [Required]
         public string Address { get; set; }
 
-        public void CreateCustomerSp()
+        public async Task CreateCustomerSp()
         {
             var customer = new Customer()
             {
@@ -34,7 +34,7 @@ namespace DemoProject.Areas.Admin.ModelsAdo
             };
 
             var dbContext = new Repository();
-            dbContext.AddCustomerSp(customer);
+            await dbContext.AddCustomerSpAsync(customer);
         }
 
         public void CreateCustomer()
@@ -50,21 +50,6 @@ namespace DemoProject.Areas.Admin.ModelsAdo
             var dbContext = new Repository();
             dbContext.AddCustomer(customer, entityName);
          
-        }
-
-        public void CreateCustomer2()
-        {
-            var entityName = "Customers";
-            var customer = new Demo.GenericCustomLayerAdo.Customer()
-            {
-                Name = Name,
-                Age = Age,
-                Address = Address,
-            };
-
-            var repositoryGeneric = new ChildRepositoryAdoGeneric();
-            repositoryGeneric.AddCustomer(customer);
-
         }
 
         public void CreateCustomerBulk()
