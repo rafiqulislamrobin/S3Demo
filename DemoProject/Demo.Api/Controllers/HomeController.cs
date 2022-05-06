@@ -1,4 +1,6 @@
-﻿using Demo.Api.Models;
+﻿using Autofac;
+using Custom.DataLayer;
+using Demo.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Api.Controllers
@@ -8,11 +10,15 @@ namespace Demo.Api.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private ILifetimeScope _scope;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+            ILifetimeScope scope)
         {
             _logger = logger;
+            _scope = scope;
         }
+
 
         [HttpGet]
         [Route("api/[controller]")]
@@ -41,7 +47,8 @@ namespace Demo.Api.Controllers
             {
                 try
                 {
-                    model.CreateCustomer();
+                    model.AutofacResolve(_scope);
+                    await model.CreateCustomerSpAsync();
                 }
                 catch (Exception ex)
                 {
@@ -49,8 +56,8 @@ namespace Demo.Api.Controllers
                     _logger.LogError(ex, "Add Customer Failed");
                     return BadRequest(model);
                 }
-
             }
+
             return Ok(model);
         }
 

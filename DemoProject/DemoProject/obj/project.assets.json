@@ -3628,6 +3628,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "Autofac.Extensions.DependencyInjection": "7.2.0",
           "System.Data.SqlClient": "4.8.3"
         },
         "compile": {

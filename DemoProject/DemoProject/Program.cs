@@ -53,11 +53,10 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IRepository, Repository>();
 
 try
 {
-    builder.Services.Configure<FileUploadSettings>(
-    builder.Configuration.GetSection(FileUploadSettings.FileUploadSetting));
     var app = builder.Build();
     var autofacContainer = app.Services.GetAutofacRoot();
 
